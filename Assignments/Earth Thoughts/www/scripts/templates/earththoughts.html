@@ -112,12 +112,7 @@
                 console.log(data.url)
                 $('#main_image').css('background-image','url('+data.url+')');
             });
-        });
-    </script>
-	<script>
-        $(function() {
-            console.log( "ready!" );
-            $.get( "http://localhost:5050/get_thought", function( data ) {
+			$.get( "http://localhost:5050/get_thought", function( data ) {
             
                 console.log(data.title)
                 document.getElementById("text_par").innerHTML = data.title;
@@ -125,5 +120,6 @@
             });
         });
     </script>
+
   </body>
 </html>
