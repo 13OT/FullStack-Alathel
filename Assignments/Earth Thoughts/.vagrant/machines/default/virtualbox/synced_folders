@@ -1,1 +1,0 @@
-{"virtualbox":{"/var/www":{"guestpath":"/var/www","hostpath":"C:/Users/Aalat/Documents/Vagrant_startup/www","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/Aalat/Documents/Vagrant_startup","disabled":false,"__vagrantfile":true}}}
