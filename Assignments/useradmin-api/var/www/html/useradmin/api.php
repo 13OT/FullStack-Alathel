@@ -207,12 +207,11 @@ class MyAPI extends API
             foreach($this->request as $k => $v){
     	        $request[$k][0] = json_decode($v[0], true);
                 $request[$k][1] = json_decode($v[1], true);
-}
-            foreach($request as $k => $v){
-                $users[] = json_decode(json_encode($this->mh->query($v[0])), true);
+                $users[] = json_decode(json_encode($this->mh->query($request[$k][0])), true);
                 $users[$k] =$users[$k][0];
-                $to_del[]= $v[0];
-}            $result_del = $this->mh->delete($to_del);
+                $to_del[]= $request[$k][0];    
+}
+            $result_del = $this->mh->delete($to_del);
             foreach ($request as $key => $val){
                 foreach($val[1] as $k => $v)
 	    		    $users[$key][$k] = $v;
