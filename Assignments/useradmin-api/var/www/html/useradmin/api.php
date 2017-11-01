@@ -167,7 +167,7 @@ class MyAPI extends API
         /**
      *  @name: add_user
      *  @description: adds a new user(s) to the collection
-     *  @type: PUT
+     *  @type: POST
      *
      *  The posted data will be an json array of 1 - N arrays of key value pairs.
      *  E.g.  
@@ -179,83 +179,56 @@ class MyAPI extends API
     protected function add_user(){
         
                 $this -> mh-> setDbcoll('users');
-        
-                if(is_array($this->request)){
-                        if(array_key_exists('data',$this->request)){
-                                foreach($this->request['data'] as $k => $v)
-                                        $arr_ins[] = json_decode($v, true);
-                        }
-        
-                        else{
-                                foreach($this->request as $k => $v)
-                                        $arr_ins[] = json_decode($v, true);
-        }}
-                //$users = $this->mh->query(); pull users to see if keys match
-                //$users = json_decode(json_encode($users), True);
-                //$users = $users[0];
-                //foreach($users[0] as $k => $v)
-                //    $all_val[] = $k;
-              //          $i=0;
-              // foreach ($arr_ins as $key1 => $val1) {
-              //    foreach($val1 as $key2 => $val2){
-              //      if(in_array($key2, $all_val) && (is_string($val2) || is_long($val2)))
-              //        $arr_to_ins[$i][$key2] = $val2;
-              //    }
-              //    $i++;
-              //}
+                foreach($this->request as $k => $v)
+                    $arr_ins[] = json_decode($v, true);
                 $result = $this->mh->insert($arr_ins);
                 return $result;
         }
+                /**
+     *  @name: update_user
+     *  @description: update existing user(s) in the collection
+     *  @type: POST
+     *
+     *  The posted data will be an json array of 1 - N arrays of key value pairs.
+     *  E.g.  
+     *  Example:
+     *  { 
+     *     TBD in class
+     *  }
+     */
+
         protected function update_user()
         {
-
             $this->mh->setDbcoll('users');
-
-       	    $this->logger->do_log("REQUEST UPDATE");
-	    $this->logger->do_log($this->request);
-	    $request= [];
-	    $users = [];
-	    $result_del=[];
-	    $result_ins=[];
+	        $request= [];
+	        $users = [];
+	        $result_del=[];
+	        $result_ins=[];
             foreach($this->request as $k => $v){
     	        $request[$k][0] = json_decode($v[0], true);
                 $request[$k][1] = json_decode($v[1], true);
 }
-            $this->logger->do_log("USER update requ after loop");
-	    $this->logger->do_log($request);
-            foreach($request as $k => $v)
-                $users[] = $this->mh->query($v[0]);
-	    $this->logger->do_log("PIECE OF SHIT QUERY");
-            $this->logger->do_log($users);
-            foreach($users as $k => $v)
-                $users[$k] = json_decode(json_encode($v), true);
-            $this->logger->do_log("USERs FOR update user");
-            $this->logger->do_log($users);
-            $this->logger->do_log("DELETES");
             foreach($request as $k => $v){
-		$this->logger->do_log($v[0]);
-                $result_del[] = $this->mh->delete([$v[0]]);
+                $users[] = json_decode(json_encode($this->mh->query($v[0])), true);
+		$users[$k] =$users[$k][0];
 }
+            foreach($request as $k => $v)
+                $to_del[]= $v[0];
+            $result_del = $this->mh->delete($to_del);
             foreach ($request as $key => $val){
                 foreach($val[1] as $k => $v)
-	    		$users[$key][0][$k] = $v;
+	    		    $users[$key][$k] = $v;
+
 }
-            $this->logger->do_log(" NEW USERs update");
-            $this->logger->do_log($users);
-            foreach($users as $k => $v)
-                $result_ins[] = $this->mh->insert($v);
+            $result_ins=$this->mh->insert($users);
             $results = array(" Insert" => $result_ins, "Delete" => $result_del);
-            $this->logger->do_log("RESULT UP/DELETE");
-            $this->logger->do_log($results);
-            
             return $results;
-            
-            
         }
             /**
      *  @name: delete_user
      *  @description: deletes a user(s) from the collection
-     *  @type: DELETE
+     *  @type: POST
+     *  The posted data will be an json array of 1 - N arrays of key value pairs.
      *  E.g.  
      *  Example:
      *  { 
@@ -265,12 +238,12 @@ class MyAPI extends API
     protected function delete_user()
     {
 
+	$arr_del=[];
         $this->mh->setDbcoll('users');
         foreach($this->request as $k => $v)
             $arr_del[] = json_decode($v, true);
+	$this->logger->do_log($arr_del);
         $result = $this->mh->delete($arr_del);
-        $this->logger->do_log("RESULT OF dELETE  ");
-        $this->logger->do_log($result);
         return $result;
     }
 
@@ -279,6 +252,7 @@ class MyAPI extends API
      *  @name: find_user:
      *  @description: finds a user(s) in the collection
      *  @type: GET
+     *  specify attributes in request
      *  E.g.  
      *  Example:
      *  { 
@@ -288,20 +262,15 @@ class MyAPI extends API
     protected function find_user()
     {
         $this->mh->setDbcoll('users');
-        $this->logger->do_log("FIND  Request  ");
-        $this->logger->do_log($this->request);        
-        $users = $this->mh->query($this->request);
-        $this->logger->do_log("RESULT OF find  ");
-        
-        $this->logger->do_log($result);
-        
+        foreach($this->request as $k => $v)
+        	$users[] = json_decode(json_encode($this->mh->query(json_decode($v,true))), true);
         return $users;
     }
     /*
      *  @name: random_user:
-     *  @description: retreives a random user(s) from the randomuser api
+     *  @description: retreives a random user(s) from the collection 
      *  @type: GET
-     *  This will also filter the data so that only the values we need are in the collection, and all top level keys with no nesting.
+     *  specify count in request
      *  E.g.  
      *  Example:
      *  { 
@@ -311,14 +280,16 @@ class MyAPI extends API
 
     protected function random_user()
     {
-        $this->mh->setDbcoll('users');
-        $users = $this->mh->query();
-        $i= rand ( 0 , count($users)-1 );
-        $this->logger->do_log("I and its random ");
-        $this->logger->do_log($i);        
-        $this->logger->do_log($users[$i]);
-        
-        return $users[$i];
+        $this->mh->setDbcoll('users');        
+        $count = $this->request['count'];
+        $result=[];
+        $users = $this->mh->query();        
+        for ($x = 0; $x < $count; $x++) {
+            $i= rand ( 0 , count($users)-1 );
+            $result [$x] = $users[$i];
+        }
+
+        return $result;
     }
     
      
