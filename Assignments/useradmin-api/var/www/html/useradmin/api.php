@@ -210,15 +210,12 @@ class MyAPI extends API
 }
             foreach($request as $k => $v){
                 $users[] = json_decode(json_encode($this->mh->query($v[0])), true);
-		$users[$k] =$users[$k][0];
-}
-            foreach($request as $k => $v)
+                $users[$k] =$users[$k][0];
                 $to_del[]= $v[0];
-            $result_del = $this->mh->delete($to_del);
+}            $result_del = $this->mh->delete($to_del);
             foreach ($request as $key => $val){
                 foreach($val[1] as $k => $v)
 	    		    $users[$key][$k] = $v;
-
 }
             $result_ins=$this->mh->insert($users);
             $results = array(" Insert" => $result_ins, "Delete" => $result_del);
@@ -238,11 +235,10 @@ class MyAPI extends API
     protected function delete_user()
     {
 
-	$arr_del=[];
+	    $arr_del=[];
         $this->mh->setDbcoll('users');
         foreach($this->request as $k => $v)
             $arr_del[] = json_decode($v, true);
-	$this->logger->do_log($arr_del);
         $result = $this->mh->delete($arr_del);
         return $result;
     }
@@ -251,7 +247,7 @@ class MyAPI extends API
      *
      *  @name: find_user:
      *  @description: finds a user(s) in the collection
-     *  @type: GET
+     *  @type: POST
      *  specify attributes in request
      *  E.g.  
      *  Example:
