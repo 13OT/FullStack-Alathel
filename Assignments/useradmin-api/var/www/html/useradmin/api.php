@@ -1,3 +1,4 @@
+
 <?php
 error_reporting(1);
 //https://www.sitepoint.com/php-53-namespaces-basics/
@@ -57,7 +58,7 @@ abstract class API
         
         $this->logger->do_log($this->args);
         
-        while($this->args[0] == '' || $this->args[0] == 'api.php'){
+        while($this->args[0] == '' || $this->args[0] == 'api.php' || $this->args[0] == 'useradmin'){
         	array_shift($this->args);
         }
         
@@ -210,7 +211,7 @@ class MyAPI extends API
                 $users[] = json_decode(json_encode($this->mh->query($request[$k][0])), true);
                 $users[$k] =$users[$k][0];
                 $to_del[]= $request[$k][0];    
-}
+            }
             $result_del = $this->mh->delete($to_del);
             foreach ($request as $key => $val){
                 foreach($val[1] as $k => $v)
@@ -257,6 +258,9 @@ class MyAPI extends API
     protected function find_user()
     {
         $this->mh->setDbcoll('users');
+        $this->request = array_filter($this->request);
+        if(empty($this->request))
+            return $this->mh->query();
         foreach($this->request as $k => $v)
         	$users[] = json_decode(json_encode($this->mh->query(json_decode($v,true))), true);
         return $users;
