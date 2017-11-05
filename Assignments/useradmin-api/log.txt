@@ -1,0 +1,17 @@
+POST
+Array
+(
+    [0] => 
+    [1] => useradmin
+    [2] => api.php
+    [3] => delete_user
+)
+
+args array
+Array
+(
+)
+
+ENDPOINT
+delete_user
+delete_user
