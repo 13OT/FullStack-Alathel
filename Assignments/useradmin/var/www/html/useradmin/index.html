@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    	<div id="up" class="ajax_response" style="float:down"></div>
+    	<div id="up" class="ajax_response" style="float:down"  data-position-to="window"></div>
         
     <div>
         <table id="example" class="display" cellspacing="0" width="100%">
@@ -48,9 +48,9 @@
             </tfoot>
         </table>
     </div>
-    <div id="popup_del" style="display:none">
+    <div id="popup_del" style="display:none" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
 
-        <div>
+        <div data-role="header" data-theme="a">
 
             <h1>Delete user?</h1>
         </div>
@@ -61,12 +61,12 @@
 
             <p>This action cannot be undone.</p>
 
-            <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
+            <button type="button" id = "s_can" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
 
-            <button type="button" id = "s_del" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Delete</button>
+            <button type="button" id = "s_del" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" >Delete</button>
         </div>
     </div>
-    <div id="popup_edit" style="display:none">
+    <div id="popup_edit" style="display:none" data-theme="a" class="ui-corner-all" data-dismissible="false">
 
         <form>
 
@@ -123,6 +123,7 @@
                     console.log(data);
                     html = '<div>' + data + '</div>';
                     $('body').append(html);
+                    location.reload();
                 },
                 data: data
             });
@@ -152,6 +153,7 @@
 				setTimeout(function() {
 					$('#up').fadeOut("slow");
 				}, 5500 );
+                 location.reload();
 
                 },
                 data: dat
@@ -210,6 +212,10 @@
                 $("#s_del").click(function () {
                     console.log(dat);
                     delete_users (dat);}); 
+                $("#s_can").click(function () {
+                    $("#popup_del").dialog('close');
+}); 
+                
             });
             $('.edit_user').click(function () {
                 var $this = $(this);
