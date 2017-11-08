@@ -115,15 +115,16 @@
         $("#popup_edit").dialog({
             autoOpen: false
         });
-        function delete_users(data) {
+        function delete_users(data,row) {
             $.ajax({
                 url: "http://13ot.org/useradmin/api.php/delete_user",
                 type: 'POST',
                 success: function (data) {
-                    console.log(data);
-                    html = '<div>' + data + '</div>';
+                    $("#popup_del").dialog('close');
+                    
+                   row.remove();
+                           html = '<div>' + data + '</div>';
                     $('body').append(html);
-                    location.reload();
                 },
                 data: data
             });
@@ -145,15 +146,15 @@
             $.ajax({
                 url: "http://13ot.org/useradmin/api.php/update_user/",
                 type: 'POST',
-                headers: {
-    "content-type": "application/x-www-form-urlencoded",
-    "cache-control": "no-cache"},
                 success: function (data) {
-                    $('#up').fadeIn().html(JSON.stringify(data));
+                    console.log(data);
+
+                    $("#popup_edit").dialog('close');
+                    $('#up').fadeIn().html('Update has '+data.update);
 				setTimeout(function() {
 					$('#up').fadeOut("slow");
-				}, 5500 );
-                 location.reload();
+                    location.reload()
+				}, 3500 );
 
                 },
                 data: dat
@@ -203,6 +204,7 @@
 
             $('.delete_user').click(function () {
                 var $this = $(this);
+                var row = $(this).closest('tr');
                 var id = $this.data();
                 id['_id'] = id['id'];
                 delete id['id'];
@@ -211,7 +213,7 @@
                 dat['0'] = JSON.stringify(id);
                 $("#s_del").click(function () {
                     console.log(dat);
-                    delete_users (dat);}); 
+                    delete_users (dat,row);}); 
                 $("#s_can").click(function () {
                     $("#popup_del").dialog('close');
 }); 
@@ -256,7 +258,6 @@
                 bundle['0'] = JSON.stringify(id);
                 bundle['1'] = JSON.stringify($data);
                 dat ['0'] = bundle;
-
                 update_user(dat);
                 
             });
