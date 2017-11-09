@@ -6,9 +6,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Api Test</title>
-    <link rel="stylesheet" href=".\css\smoothness.css" />
-    <link href=".\css\fontsawesome.css" rel="stylesheet" crossorigin="anonymous">
-    <link rel="stylesheet" href=".\css\datatable.css">
+    <link rel="stylesheet" href="./css/smoothness.css" />
+    <link href="./css/fontsawesome.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/datatable.css">
     <link href='./css/fonts.css' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="./css/style.css">
 </head>
@@ -85,7 +85,7 @@
                 <label for="un" class="ui-hidden-accessible">Username:</label>
                 <input type="text" name="first" id="e7" value="" placeholder="first" data-theme="a">
                 <label for="pw" class="ui-hidden-accessible">Password:</label>
-                <input type="password" name="pass" id="e8" value="" placeholder="password" data-theme="a">
+                <input type="text" name="pass" id="e8" value="" placeholder="password" data-theme="a">
                 <button type="button" id="s_edit" class = "edit_form" >Submit</button>
         </form>
     </div>
@@ -96,11 +96,9 @@
         h.style.height = (h.scrollHeight)+"px";
     }
     </script>
-    <script src="http://code.jquery.com/jquery-latest.pack.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="./js/jquery1.11.1.min.js"></script>
+    <script src="./js/jqueryui.js"></script>
+    <script src="./js/datatable.min.js"></script>
 
 
     <script>
@@ -179,7 +177,7 @@
                     data[i].email,
                     data[i].username,
                     data[i].password,
-                    '<i class="fa fa-pencil-square-o edit_user" aria-hidden="true" data-id="' + data[i]['_id'] + '"></i> <i class="fa fa-trash delete_user" aria-hidden="true" data-id="' + data[i]['_id'] + '"></i>'
+                    '<i class="fa fa-pencil-square-o edit_user" aria-hidden="true" data-id="' + data[i]['_id'] + '"></i> <i class="fa fa-trash-o delete_user" aria-hidden="true" data-id="' + data[i]['_id'] + '"></i>'
 
                 ];
                 newobj["data"].push(temp);
