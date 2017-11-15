@@ -243,9 +243,9 @@ class MyAPI extends API
             $this->logger->do_log($result_ins);
             $this->logger->do_log($result_del);
             if($result_ins[0] && $result_del)
-                $result = array(" update" => "Success");
+                $result = array("update" => "successed");
             else
-                $result = array(" update" => "Failed");
+                $result = array("update" => "failed");
             
 
             return $result;
@@ -269,6 +269,11 @@ class MyAPI extends API
         foreach($this->request as $k => $v)
             $arr_del[] = json_decode($v, true);
         $result = $this->mh->delete($arr_del);
+        if($result == 1)
+            $result = "Delete successed";
+        else
+            $result = "Delete failed";
+        
         return $result;
     }
 
