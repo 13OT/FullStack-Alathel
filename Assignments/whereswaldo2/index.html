@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Where's Waldo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="./css/the-big-picture.css" rel="stylesheet">
+    <link href="./css/magnifier.css" rel="stylesheet">
+    <link href="./css/mystyle.css" rel="stylesheet">
+    
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+        <div class="container">
+            <a class="navbar-brand" id= "start">Start</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-12 col-md-auto mycenter">
+                <img src="./game_images/1512019585.png" id="thumb">
+            </div>
+            <div class="col col-lg-2"></div>
+        </div>
+    </div>
+    <div id  = "api">
+
+    </div>
+    <div id ="stopwatch1"> 
+    <nav class="controls">
+    </nav>
+    <div class="stopwatch"></div>
+    <ul class="results"></ul>
+    </div>
+    <!-- Bootstrap core JavaScript -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/Event.js"></script>
+    <script src="./js/Magnifier.js"></script>
+    <script src="./js/timer.js"></script>
+    <script>
+
+    function get_distance(coord) {
+            $.ajax({
+                url: "http://13ot.org/whereswaldo2/api/index.php/distance",
+                type: 'POST',
+                success: function (data) {
+                    $("#api").html(data); 
+                    console.log(data["found"]+"\n"+data['directions']);
+
+                },
+                data: {"x" : coord[0],"y":coord[1]},
+            });
+        }
+
+        var evt = new Event();
+        var m = new Magnifier(evt);
+        var blur_x = 15;
+        var unb = null;
+
+        $("#thumb").click(function (e) {
+            var coord =  [e.originalEvent.layerX, e.originalEvent.layerY];
+            var txt = "";
+            txt += "Width: " + $("#thumb").width() + "</br>";
+            txt += "Height: " + $("#thumb").height();
+            var txt1 = "";
+            txt1 += "Inner width: " + $("#thumb").innerWidth() + "</br>";
+            txt1 += "Inner height: " + $("#thumb").innerHeight();
+            console.log(txt);
+            console.log(txt1);
+            if(unb != null)
+                get_distance(coord);
+            
+        });
+
+        blur($("#thumb"), blur_x);
+        var $win = $(window);
+
+        $("#start").click(function(){
+            stopwatch.start();
+            unblur($("#thumb"));
+            unb = true;
+            
+
+
+        });
+        $(".results").height(10);
+    </script>
+
+
+</body>
+
+</html>
